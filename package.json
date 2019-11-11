@@ -5,13 +5,19 @@
     "repository": "https://github.com/SSHS-CSI/english-survey-backend.git",
     "license": "MIT",
     "scripts": {
-        "start": "node src/index.js"
+        "start": "node src/index.js",
+        "start:dev": "nodemon --watch src/ src/index.js"
     },
     "dependencies": {
+        "@hapi/joi": "^16.1.7",
+        "bcrypt": "^3.0.6",
         "dotenv": "^8.2.0",
         "koa": "^2.10.0",
         "koa-body": "^4.1.1",
+        "koa-bodyparser": "^4.2.1",
         "koa-router": "^7.4.0",
-        "mongodb": "^3.3.3"
+        "mongodb": "^3.3.3",
+        "mongoose": "^5.7.9",
+        "nodemon": "^1.19.4"
     }
 }
