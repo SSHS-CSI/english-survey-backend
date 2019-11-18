@@ -1,5 +1,6 @@
 module.exports = async (ctx, next) => {
-    let result = await ctx.state.collection.account.find({ hasResponsed: true })
+    let result = await ctx.state.collection.account.find({ hasResponsed: false })
+        .sort({ createdAt: -1 })
         .sort({ type: 1 })
         .toArray();
 
@@ -9,5 +10,11 @@ module.exports = async (ctx, next) => {
         ctx.throw(404, JSON.stringify(ctx.body));
     }
 
-    ctx.body = result;
+    ctx.body = result.map(data => {
+        let processed = {};
+        processed.username = data.username;
+        processed.password = data.password;
+        processed.type = data.type;
+        return processed;
+    });
 }

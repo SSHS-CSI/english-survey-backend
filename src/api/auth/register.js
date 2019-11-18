@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const genToken = require('../../lib/token');
 
 module.exports = async (ctx, next) => {
     if (
@@ -32,4 +33,5 @@ module.exports = async (ctx, next) => {
     }
 
     ctx.body.status = "success";
+    ctx.body.profile = profile;
 };
