@@ -16,8 +16,9 @@
         "koa-body": "^4.1.1",
         "koa-bodyparser": "^4.2.1",
         "koa-router": "^7.4.0",
+        "koa-session": "^5.12.3",
         "mongodb": "^3.3.3",
-        "mongoose": "^5.7.9",
+        "mongoose": "^5.7.10",
         "nodemon": "^1.19.4"
     }
 }

@@ -28,6 +28,7 @@ Account.statics.register = (userName, type) => {
     return account.save();
 };
 
+/*
 Account.statics.findUserName = (userName) => {
     return this.findOne({userName: userName}).exec();
 };
@@ -41,5 +42,6 @@ Account.statics.validatePassword = (userName, password) => {
         return res;
     })
 }
+*/
 
 module.exports = mongoose.model('Account', Account);
