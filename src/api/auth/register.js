@@ -19,7 +19,7 @@ module.exports = async (ctx, next) => {
                 type: ctx.request.body.type,
                 hasResponsed: false,
                 password: ctx.request.body.password,
-                hashedPass: await bcrypt.hash(ctx.request.body.password, 
+                hashedPass: await bcrypt.hash(ctx.request.body.password,
                     await bcrypt.genSalt(10)),
                 createdAt: new Date()
             }
@@ -33,5 +33,4 @@ module.exports = async (ctx, next) => {
     }
 
     ctx.body.status = "success";
-    ctx.body.profile = profile;
 };

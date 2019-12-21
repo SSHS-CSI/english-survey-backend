@@ -25,15 +25,29 @@ module.exports = async (ctx, next) => {
         ctx.throw(400, JSON.stringify(ctx.body));
     }
 
+    if (result.hasResponsed) {
+        ctx.body.status = false;
+        ctx.body.error = "Already-responsed";
+        ctx.throw(400, JSON.stringify(ctx.body));
+    }
+
     const profile = {};
     profile.username = result.username;
     profile.type = result.type;
     profile._id = result._id;
     let token = genToken(profile);
 
+    let response = {
+        data: [],
+        pageNum: 0
+    };
     ctx.cookies.set('access_token', token, {
         httpOnly: true,
-        maxAge: 3 * 60 * 60 * 24 * 7
+        maxAge: 3 * 60 * 60 * 24 * 1000 
+    });
+    ctx.cookies.set('answer', JSON.stringify(response), {
+        httpOnly: true,
+        maxAge: 3 * 60 * 60 * 24 * 1000
     });
 
     ctx.body.status = "success";
