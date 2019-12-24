@@ -1,4 +1,5 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
+
 verifyToken = (token) => {
     let profile = null;
     jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
@@ -6,6 +7,6 @@ verifyToken = (token) => {
         profile = decoded;
     });
     return profile;
-}
+};
 
 module.exports = verifyToken;

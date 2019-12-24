@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
 module.exports = async (ctx, next) => {
     if (
@@ -41,11 +41,11 @@ module.exports = async (ctx, next) => {
         data: [],
         pageNum: 0
     };
-    ctx.cookies.set('access_token', token, {
+    ctx.cookies.set("access_token", token, {
         httpOnly: true,
         maxAge: 3 * 60 * 60 * 24 * 1000 
     });
-    ctx.cookies.set('answer', JSON.stringify(response), {
+    ctx.cookies.set("answer", JSON.stringify(response), {
         httpOnly: true,
         maxAge: 3 * 60 * 60 * 24 * 1000
     });

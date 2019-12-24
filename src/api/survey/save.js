@@ -1,4 +1,4 @@
-verifyToken = require('../../lib/verify');
+verifyToken = require("../../lib/verify");
 
 module.exports = async (ctx, next) => {
     if(
@@ -15,16 +15,16 @@ module.exports = async (ctx, next) => {
             ctx.body.error = "response-incomplete";
             ctx.throw(400, JSON.stringify(ctx.body));
         }
-    })
+    });
 
-    let response = JSON.parse(ctx.cookies.get('answer'));
+    let response = JSON.parse(ctx.cookies.get("answer"));
     if(JSON.stringify(response.data[response.pageNum]) === JSON.stringify(ctx.request.body.data)) {
         ctx.body.status = "success";
     }
     else {
         response.data[response.pageNum] = ctx.request.body.data;
 
-        const _profile = verifyToken(ctx.cookies.get('access_token'));
+        const _profile = verifyToken(ctx.cookies.get("access_token"));
         profile = {
             username: _profile.username,
             type: _profile.type,
@@ -37,13 +37,13 @@ module.exports = async (ctx, next) => {
                     profile: profile,
                 },
                 $set: {
-                    'response': response.data
+                    "response": response.data
                 }
             },
             { upsert: true });
 
 
-        ctx.cookies.set('answer', JSON.stringify(response), {
+        ctx.cookies.set("answer", JSON.stringify(response), {
             httpOnly: true,
             maxAge: 3 * 60 * 60 * 24 * 1000
         });

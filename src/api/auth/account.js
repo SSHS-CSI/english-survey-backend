@@ -14,7 +14,7 @@ const Account = new Schema({
 });
 
 Account.statics.register = (userName, type) => {
-    const password = crypto.randomBytes(10).toString('hex');
+    const password = crypto.randomBytes(10).toString("hex");
     const account = new this({
         profile: {
             userName: userName,
@@ -44,4 +44,4 @@ Account.statics.validatePassword = (userName, password) => {
 }
 */
 
-module.exports = mongoose.model('Account', Account);
+module.exports = mongoose.model("Account", Account);

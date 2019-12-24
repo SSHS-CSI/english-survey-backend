@@ -1,10 +1,10 @@
-const dotenv = require('dotenv');
-const path = require('path');
+const dotenv = require("dotenv");
+const path = require("path");
 
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
-const Koa = require('koa');
-const session = require('koa-session');
+const Koa = require("koa");
+const session = require("koa-session");
 
 const api = require("./api");
 

@@ -17,4 +17,4 @@ module.exports = async (ctx, next) => {
         processed.type = data.type;
         return processed;
     });
-}
+};
