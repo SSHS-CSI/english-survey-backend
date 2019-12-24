@@ -5,15 +5,11 @@ module.exports = async (ctx, next) => {
         !ctx.request.body ||
         !Array.isArray(ctx.request.body.data)
     ) {
-        ctx.body.status = false;
-        ctx.body.error = "response-incomplete";
-        ctx.throw(400, JSON.stringify(ctx.body));
+        ctx.error(400, "response-incomplete");
     }
     ctx.request.body.data.forEach((response) => {
         if (!response.left || !response.right) {
-            ctx.body.status = false;
-            ctx.body.error = "response-incomplete";
-            ctx.throw(400, JSON.stringify(ctx.body));
+            ctx.error(400, "response-incomplete");
         }
     });
 

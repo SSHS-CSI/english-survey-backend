@@ -5,9 +5,7 @@ module.exports = async (ctx, next) => {
         .toArray();
 
     if(result === null) {
-        ctx.body.status = false;
-        ctx.body.error = "no-result";
-        ctx.throw(404, JSON.stringify(ctx.body));
+        ctx.error(404, "no-result");
     }
 
     ctx.body = result.map(data => {

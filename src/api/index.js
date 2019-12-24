@@ -10,6 +10,11 @@ const survey = require("./survey");
 
 api.use(async (ctx, next) => {
     ctx.body = {};
+    ctx.error = (code, error) => {
+        ctx.body.status = false;
+        ctx.body.error = error;
+        ctx.throw(code, JSON.stringify(ctx.body));
+    };
     await next();
 });
 

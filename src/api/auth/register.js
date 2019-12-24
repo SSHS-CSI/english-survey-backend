@@ -7,9 +7,7 @@ module.exports = async (ctx, next) => {
         !ctx.request.body.type ||
         !ctx.request.body.password
     ) {
-        ctx.body.status = false;
-        ctx.body.error = "form-malformed";
-        ctx.throw(400, JSON.stringify(ctx.body));
+        ctx.error(400, "form-malformed");
     }
 
     const result = await ctx.state.collection.account.findOneAndUpdate({ username: ctx.request.body.username },
@@ -27,9 +25,7 @@ module.exports = async (ctx, next) => {
         { upsert: true });
 
     if (result.value) {
-        ctx.body.status = false;
-        ctx.body.error = "user-exists";
-        ctx.throw(400, JSON.stringify(ctx.body));
+        ctx.error(400, "user-exists");
     }
 
     ctx.body.status = "success";
