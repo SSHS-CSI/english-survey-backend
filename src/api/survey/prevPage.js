@@ -1,4 +1,4 @@
-module.exports = () => {
+module.exports = (ctx) => {
     response = ctx.cookies.get("answer");
     response.pageNum--;
     ctx.cookies.set("answer", response, {
