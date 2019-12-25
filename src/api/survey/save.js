@@ -5,11 +5,11 @@ module.exports = async (ctx, next) => {
         !ctx.request.body ||
         !Array.isArray(ctx.request.body.data)
     ) {
-        ctx.error(400, "response-incomplete");
+        ctx.error(400, "form-malformed");
     }
     ctx.request.body.data.forEach((response) => {
         if (!response.left || !response.right) {
-            ctx.error(400, "response-incomplete");
+            ctx.error(400, "form-malformed");
         }
     });
 
