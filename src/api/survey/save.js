@@ -1,4 +1,4 @@
-verifyToken = require("../../lib/verify");
+const verifyToken = require("../../lib/verify");
 
 module.exports = async (ctx, next) => {
     if(
