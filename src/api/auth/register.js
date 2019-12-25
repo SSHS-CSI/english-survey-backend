@@ -1,5 +1,4 @@
 const bcrypt = require("bcrypt");
-const genToken = require("../../lib/token");
 
 module.exports = async (ctx, next) => {
     if (
