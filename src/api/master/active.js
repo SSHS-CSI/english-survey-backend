@@ -11,7 +11,6 @@ module.exports = async (ctx, next) => {
     ctx.body = result.map(data => {
         let processed = {};
         processed.username = data.username;
-        processed.password = data.password;
         processed.type = data.type;
         return processed;
     });
