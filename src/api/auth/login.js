@@ -15,7 +15,7 @@ module.exports = async (ctx, next) => {
         ctx.error(400, "no-such-user");
     }
 
-    let passMatch = bcrypt.compareSync(ctx.request.body.password, result.hashedPass);
+    let passMatch = await bcrypt.compare(ctx.request.body.password, result.hashedPass);
     if (!passMatch) {
         ctx.error(400, "password-does-not-match");
     }
