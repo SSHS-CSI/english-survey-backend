@@ -1,10 +1,8 @@
 const MongoClient = require("mongodb").MongoClient;
 
 let client = null;
-let db = null;
 (async () => {
     client = await MongoClient.connect(process.env.MONGO_URI, {
-        useNewUrlParser: true,
         useUnifiedTopology: true
     });
     console.log("DB connection established!");
