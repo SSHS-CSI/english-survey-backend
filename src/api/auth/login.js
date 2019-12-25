@@ -12,12 +12,12 @@ module.exports = async (ctx, next) => {
     const result = await ctx.state.collection.account.findOne({ username: ctx.request.body.username });
 
     if (!result) {
-        ctx.error(400, "no-such-user");
+        ctx.error(403, "no-such-user");
     }
 
     let passMatch = await bcrypt.compare(ctx.request.body.password, result.hashedPass);
     if (!passMatch) {
-        ctx.error(400, "password-does-not-match");
+        ctx.error(403, "password-does-not-match");
     }
 
     let response = {

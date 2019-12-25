@@ -21,7 +21,7 @@ module.exports = async (ctx, next) => {
         { upsert: true });
 
     if (result.value) {
-        ctx.error(400, "user-exists");
+        ctx.error(403, "user-exists");
     }
 
     ctx.body.status = "success";
