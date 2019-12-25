@@ -1,5 +1,5 @@
 module.exports = async (ctx, next) => {
-    let result = await ctx.state.collection.account.find({ hasResponsed: false })
+    let result = await ctx.state.collection.account.find()
         .sort({ createdAt: -1 })
         .sort({ type: 1 })
         .toArray();

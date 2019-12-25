@@ -20,10 +20,6 @@ module.exports = async (ctx, next) => {
         ctx.error(400, "password-does-not-match");
     }
 
-    if (result.hasResponsed) {
-        ctx.error(400, "already-responsed");
-    }
-
     let response = {
         data: [],
         pageNum: 0

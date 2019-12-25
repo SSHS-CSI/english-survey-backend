@@ -14,7 +14,6 @@ module.exports = async (ctx, next) => {
             $setOnInsert: {
                 username: ctx.request.body.username,
                 type: ctx.request.body.type,
-                hasResponsed: false,
                 hashedPass: await bcrypt.hash(ctx.request.body.password, await bcrypt.genSalt(10)),
                 createdAt: new Date()
             }
