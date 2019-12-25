@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-genToken = (payload) => jwt.sign(payload, process.env.JWT_KEY, {
+genToken = (payload) => jwt.sign(payload, process.env.KEY, {
     expiresIn: "1d"
 });
 

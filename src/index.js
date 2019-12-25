@@ -11,6 +11,8 @@ const api = require("./api");
 const app = new Koa();
 const PORT = process.env.PORT || 8000;
 
+app.keys = [process.env.KEY];
+
 app.use(session(app));
 app.use(api.routes());
 app.use(api.allowedMethods());

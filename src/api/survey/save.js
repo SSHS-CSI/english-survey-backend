@@ -20,20 +20,16 @@ module.exports = async (ctx, next) => {
     else {
         response.data[response.pageNum] = ctx.request.body.data;
 
-        const _profile = verifyToken(ctx.cookies.get("access_token"));
-        profile = {
-            username: _profile.username,
-            type: _profile.type,
-            _id: _profile._id
-        };
+        const { _id } = ctx.session;
+        profile = { _id };
 
-        const result = await ctx.state.collection.response.findOneAndUpdate({ profile: profile },
+        const result = await ctx.state.collection.response.findOneAndUpdate({ profileId: _id },
             {
                 $setOnInsert: {
-                    profile: profile,
+                    profileId: _id,
                 },
                 $set: {
-                    "response": response.data
+                    response: response.data
                 }
             },
             { upsert: true });

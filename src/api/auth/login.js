@@ -24,20 +24,12 @@ module.exports = async (ctx, next) => {
         ctx.error(400, "already-responsed");
     }
 
-    const profile = {};
-    profile.username = result.username;
-    profile.type = result.type;
-    profile._id = result._id;
-    let token = genToken(profile);
-
     let response = {
         data: [],
         pageNum: 0
     };
-    ctx.cookies.set("access_token", token, {
-        httpOnly: true,
-        maxAge: 3 * 60 * 60 * 24 * 1000 
-    });
+
+    ctx.session._id = result._id;
     ctx.cookies.set("answer", JSON.stringify(response), {
         httpOnly: true,
         maxAge: 3 * 60 * 60 * 24 * 1000
