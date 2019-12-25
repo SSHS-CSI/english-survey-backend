@@ -1,3 +1,5 @@
+const { HttpError } = require("koa");
+
 const Router = require("koa-router");
 const koaBody = require("koa-body");
 
@@ -15,7 +17,11 @@ api.use(async (ctx, next) => {
         ctx.body.error = error;
         ctx.throw(code, JSON.stringify(ctx.body));
     };
-    await next();
+    try {
+        await next();
+    } catch(e) {
+        if(!(e instanceof HttpError)) { throw e; }
+    }
 });
 
 api.use(koaBody());
