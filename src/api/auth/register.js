@@ -15,6 +15,10 @@ module.exports = async (ctx, next) => {
                 username: ctx.request.body.username,
                 type: ctx.request.body.type,
                 hashedPass: await bcrypt.hash(ctx.request.body.password, await bcrypt.genSalt(10)),
+                response: {
+                    data: [],
+                    pageNum: 0
+                },
                 createdAt: new Date()
             }
         },

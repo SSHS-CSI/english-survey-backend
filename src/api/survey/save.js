@@ -1,45 +1,49 @@
-const verifyToken = require("../../lib/verify");
+const { ObjectID } = require("mongodb");
+
+const questions = require("./questions.js");
 
 module.exports = async (ctx, next) => {
+    // cannot check student count here
+    // should error on `ctx.request.body.pageNum >= students.length`
     if(
         !ctx.request.body ||
-        !Array.isArray(ctx.request.body.data)
+        !Array.isArray(ctx.request.body.data) ||
+        !ctx.request.body.data.length === questions.length ||
+        !Number.isInteger(ctx.request.body.pageNum) ||
+        ctx.request.body.pageNum < 0
     ) {
         ctx.error(400, "form-malformed");
     }
+
     ctx.request.body.data.forEach((response) => {
         if (!response.left || !response.right) {
             ctx.error(400, "form-malformed");
         }
     });
 
-    let response = JSON.parse(ctx.cookies.get("answer"));
-    if(JSON.stringify(response.data[response.pageNum]) === JSON.stringify(ctx.request.body.data)) {
-        ctx.body.status = "success";
+    if (!ctx.session || !ctx.session._id) {
+        console.log("[debug]: ctx.session = ", ctx.session);
+        console.log("[debug]: ctx.session.isNew = ", ctx.session.isNew);
+        ctx.error(401, "unauthorized");
     }
-    else {
-        response.data[response.pageNum] = ctx.request.body.data;
 
-        const { _id } = ctx.session;
-        profile = { _id };
+    // should check whether update is successful
+    // does ctx.request.body.pageNum exist in response.data?
+    const updateResult = await ctx.state.collection.account.findOneAndUpdate({
+        _id: new ObjectID(ctx.session._id),
+        [`response.data.${ctx.request.body.pageNum}`]: { $exists: true }
+    }, {
+        $set: {
+            [`response.data.${ctx.request.body.pageNum}`]: ctx.request.body.data
+        }
+    });
 
-        const result = await ctx.state.collection.response.findOneAndUpdate({ profileId: _id },
-            {
-                $setOnInsert: {
-                    profileId: _id,
-                },
-                $set: {
-                    response: response.data
-                }
-            },
-            { upsert: true });
-
-
-        ctx.cookies.set("answer", JSON.stringify(response), {
-            httpOnly: true,
-            maxAge: 3 * 60 * 60 * 24 * 1000
-        });
-
-        ctx.body.status = "success";
+    // if there is no value, the query's pageNum is non-existent
+    if(updateResult.value === null) {
+        console.log("[debug]: ctx.request.body.pageNum = ", ctx.request.body.pageNum);
+        console.log("[debug]: updateResult = ", updateResult);
+        ctx.error(400, "form-malformed");
     }
+
+    ctx.body.status = "success";
 };

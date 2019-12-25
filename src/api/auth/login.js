@@ -1,4 +1,3 @@
-const genToken = require('../../lib/token');
 const bcrypt = require("bcrypt");
 
 module.exports = async (ctx, next) => {
@@ -20,16 +19,6 @@ module.exports = async (ctx, next) => {
         ctx.error(403, "password-does-not-match");
     }
 
-    let response = {
-        data: [],
-        pageNum: 0
-    };
-
     ctx.session._id = result._id;
-    ctx.cookies.set("answer", JSON.stringify(response), {
-        httpOnly: true,
-        maxAge: 3 * 60 * 60 * 24 * 1000
-    });
-
     ctx.body.status = "success";
 };
