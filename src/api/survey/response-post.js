@@ -16,7 +16,7 @@ module.exports = async (ctx, next) => {
     }
 
     ctx.request.body.data.forEach((response) => {
-        if (!response.left || !response.right) {
+        if (response.left === undefined || !response.right === undefined) {
             ctx.error(400, "form-malformed");
         }
     });
