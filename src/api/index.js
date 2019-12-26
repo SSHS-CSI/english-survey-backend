@@ -21,6 +21,7 @@ api.use(async (ctx, next) => {
         await next();
     } catch(e) {
         if(!(e instanceof HttpError)) { throw e; }
+        ctx.status = e.status;
     }
 });
 
