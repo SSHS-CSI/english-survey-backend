@@ -1,5 +1,7 @@
 const bcrypt = require("bcrypt");
 
+const studentCount = require("../survey/students.js");
+
 module.exports = async (ctx, next) => {
     if (
         !ctx.request.body.username ||
@@ -16,7 +18,7 @@ module.exports = async (ctx, next) => {
                 type: ctx.request.body.type,
                 hashedPass: await bcrypt.hash(ctx.request.body.password, await bcrypt.genSalt(10)),
                 response: {
-                    data: [],
+                    data: new Array(studentCount).fill(null),
                     pageNum: 0
                 },
                 createdAt: new Date()

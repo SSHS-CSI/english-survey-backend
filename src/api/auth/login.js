@@ -19,6 +19,6 @@ module.exports = async (ctx, next) => {
         ctx.error(403, "password-does-not-match");
     }
 
-    ctx.session._id = result._id;
+    ctx.session.id = result._id;
     ctx.body.status = "success";
 };
