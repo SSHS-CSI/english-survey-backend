@@ -31,9 +31,10 @@ module.exports = async (ctx, next) => {
     // does ctx.request.body.pageNum exist in response.data?
     const updateResult = await ctx.state.collection.account.findOneAndUpdate({
         _id: new ObjectID(ctx.session.id),
-        [`response.data.${ctx.request.body.pageNum}`]: { $exists: true }
+        [`response.data.${ctx.request.body.pageNum}`]: { $exists: true },
     }, {
         $set: {
+            "response.pageNum": ctx.request.body.pageNum,
             [`response.data.${ctx.request.body.pageNum}`]: ctx.request.body.data
         }
     });
