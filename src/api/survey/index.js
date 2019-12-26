@@ -10,5 +10,9 @@ survey.get("/student-count", async (ctx) => {
     ctx.body.data = require("./students.js");
     ctx.body.status = "success";
 });
+survey.get("/questions", async (ctx) => {
+    ctx.body.data = require("./questions.js");
+    ctx.body.status = "success";
+});
 
 module.exports = survey;
