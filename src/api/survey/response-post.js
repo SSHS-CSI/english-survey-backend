@@ -21,12 +21,6 @@ module.exports = async (ctx, next) => {
         }
     });
 
-    if (!ctx.session || !ctx.session.id) {
-        console.log("[debug]: ctx.session = ", ctx.session);
-        console.log("[debug]: ctx.session.isNew = ", ctx.session.isNew);
-        ctx.error(401, "unauthorized");
-    }
-
     // should check whether update is successful
     // does ctx.request.body.pageNum exist in response.data?
     const updateResult = await ctx.state.collection.account.findOneAndUpdate({
