@@ -21,4 +21,7 @@ module.exports = async (ctx, next) => {
 
     ctx.session.id = result._id;
     ctx.body.status = "success";
+
+    // check if type is admin
+    ctx.body.isAdmin = result.type === 0;
 };

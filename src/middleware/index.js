@@ -1,4 +1,5 @@
-const MongoClient = require("mongodb").MongoClient;
+const { MongoClient, ObjectID } = require("mongodb");
+const compose = require("koa-compose");
 
 let client = null;
 (async () => {
@@ -8,27 +9,44 @@ let client = null;
     console.log("DB connection established!");
 })();
 
-module.exports = {
-    getDB: async (ctx, next) => {
-        ctx.state.client = client;
-        ctx.state.db = client.db("Survey_1");
-        ctx.state.collection = {};
-        ctx.state.collection.question = ctx.state.db.collection("question");
-        ctx.state.collection.response = ctx.state.db.collection("response");
-        ctx.state.collection.account = ctx.state.db.collection("account");
-        await next();
-    },
-    requireAuth: async (ctx, next) => {
-        if(ctx.session.isNew) {
-            console.log("[debug]: ctx.session = ", ctx.session);
-            console.log("[debug]: ctx.session.id = ", ctx.session.id);
-            ctx.error(401, "unauthorized");
-        } else if(!ctx.session.id) {
-            console.log("[debug]: ctx.session = ", ctx.session);
-            console.log("[debug]: ctx.session.isNew = ", ctx.session.isNew);
-            ctx.error(401, "unauthorized");
-        }
+const getDB = async (ctx, next) => {
+    ctx.state.client = client;
+    ctx.state.db = client.db("Survey_1");
+    ctx.state.collection = {};
+    ctx.state.collection.account = ctx.state.db.collection("account");
+    await next();
+};
 
-        await next();
+const requireAuth = async (ctx, next) => {
+    if(ctx.session.isNew) {
+        console.log("[debug]: ctx.session = ", ctx.session);
+        console.log("[debug]: ctx.session.id = ", ctx.session.id);
+        ctx.error(401, "unauthorized");
+    } else if(!ctx.session.id) {
+        console.log("[debug]: ctx.sessin = ", ctx.session);
+        console.log("[debug]: ctx.session.isNew = ", ctx.session.isNew);
+        ctx.error(401, "unauthorized");
     }
+
+    await next();
+};
+
+// implicitly assuming getDB is already called beforehand
+const requireAdmin =  compose([requireAuth, async (ctx, next) => {
+    const result = await ctx.state.collection.account.findOne({
+        _id: new ObjectID(ctx.session.id)
+    });
+
+    // if not admin
+    if(result.type !== 0) {
+        ctx.error(401, "unauthorized");
+    }
+
+    await next();
+}]);
+
+module.exports = {
+    getDB,
+    requireAuth,
+    requireAdmin
 };
