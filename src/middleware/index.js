@@ -19,12 +19,6 @@ const getDB = async (ctx, next) => {
 
 const requireAuth = async (ctx, next) => {
     if(ctx.session.isNew) {
-        console.log("[debug]: ctx.session = ", ctx.session);
-        console.log("[debug]: ctx.session.id = ", ctx.session.id);
-        ctx.error(401, "unauthorized");
-    } else if(!ctx.session.id) {
-        console.log("[debug]: ctx.sessin = ", ctx.session);
-        console.log("[debug]: ctx.session.isNew = ", ctx.session.isNew);
         ctx.error(401, "unauthorized");
     }
 
