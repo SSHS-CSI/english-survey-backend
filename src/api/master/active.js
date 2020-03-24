@@ -8,11 +8,6 @@ module.exports = async (ctx, next) => {
         ctx.error(404, "no-result");
     }
 
-    ctx.body.data = result.map(data => {
-        let processed = {};
-        processed.username = data.username;
-        processed.type = data.type;
-        return processed;
-    });
+    ctx.body.data = result.map(({ username, type }) => ({ username, type }));
     ctx.body.status = "success";
 };

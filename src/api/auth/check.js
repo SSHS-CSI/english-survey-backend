@@ -5,6 +5,6 @@ module.exports = async (ctx, next) => {
         _id: new ObjectID(ctx.session.id)
     });
 
-    ctx.body.isAdmin = user.type === 0;
+    ctx.body.type = user.type;
     ctx.body.status = "success";
 };

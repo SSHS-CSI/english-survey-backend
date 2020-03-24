@@ -32,7 +32,7 @@ const requireAdmin =  compose([requireAuth, async (ctx, next) => {
     });
 
     // if not admin
-    if(result.type !== 0) {
+    if(result.type !== "admin") {
         ctx.error(401, "unauthorized");
     }
 
