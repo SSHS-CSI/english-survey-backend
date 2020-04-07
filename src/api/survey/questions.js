@@ -1,16 +1,11 @@
 module.exports = [
     {
-        type: "objective",
-        content: "text for problem 1",
-        selectCount: 5
-    },
-    {
-        type: "objective",
-        content: "text for problem 2",
-        selectCount: 4
-    },
-    {
         type: "descriptive",
-        content: "text for problem 3"
+        content: "General Impressions of Temporal Fluency"
+    },
+    {
+        type: "objective",
+        content: "Speaking Fluency",
+        selectCount: 7
     }
 ];
