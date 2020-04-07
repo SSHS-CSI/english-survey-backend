@@ -13,6 +13,11 @@ module.exports = async (ctx, next) => {
         ctx.error(500, "internal-server-error");
     }
 
+    if(account.type === "admin") {
+        ctx.error(404, "no-result");
+    }
+
     ctx.body.data = account.response;
     ctx.body.status = "success";
 };
+
