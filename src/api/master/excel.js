@@ -1,10 +1,8 @@
 const XLSX = require('xlsx');
+const FileSaver = require('file-saver');
 
 module.exports = async (ctx, next) => {
-    if (
-        !ctx.request.body.username ||
-        !ctx.request.body.type
-        ) {
+    if (!ctx.request.body.username) {
         ctx.error(400, 'form-malformed');
     }
 
@@ -42,7 +40,18 @@ module.exports = async (ctx, next) => {
     let wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Response_Result");
 
-    XLSX.writeFile(wb, ctx.request.body.username + '.xlsx');
+    //XLSX.writeFile(wb, 'test.xlsx');
+    let outFile = XLSX.write(wb, {bookType: 'xlsx', type:'base64'});
 
-    ctx.body.status = "success";
+    ctx.res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    ctx.body = new Buffer(outFile, 'base64');
+}
+
+s2ab = s => { 
+    var buf = new ArrayBuffer(s.length);
+    var view = new Uint8Array(buf);
+    for (let i = 0; i < s.length; i++) {
+        view[i] = s.charCodeAt(i) & 0xFF;
+    }
+    return buf;
 }
