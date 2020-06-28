@@ -1,7 +1,6 @@
 const XLSX = require('xlsx');
 
 module.exports = async (ctx, next) => {
-    let username = ctx.request.body.username || ctx.query.username;
     if (
         !Number.isInteger(ctx.request.body.type) ||
         (1 < ctx.request.body.type || ctx.request.body.type < 0)
@@ -10,14 +9,16 @@ module.exports = async (ctx, next) => {
     }
 
     let wb = XLSX.utils.book_new();
+    let type = ctx.request.body.type; 
     let outFile = null;
 
-    if (ctx.request.body.type === 0) {
+    if (type === 0) {
         if(!ctx.request.body.username) {
             ctx.error(400, 'form-malformed');
         }
-        const result = await ctx.state.collection.account.findOne({ username });
+        let username = ctx.request.body.username || ctx.query.username;
 
+        const result = await ctx.state.collection.account.findOne({ username: username });
         if (result === null) {
             ctx.error(403, 'no-such-user');
         }
@@ -30,9 +31,10 @@ module.exports = async (ctx, next) => {
         });
 
         ws = getWS1(result.response.data);
-        XLSX.utils.book_append_sheet(wb, ws, "Response_Result");
+        console.log(ws)
+        XLSX.utils.book_append_sheet(wb, ws, username);
         outFile = XLSX.write(wb, { bookType: 'xlsx', type: 'base64' });
-    } else {
+    } else if (type === 1) {
         const result = await ctx.state.collection.account.find().toArray();
 
         let NS = getWS2(result.filter(data => data.type === 'efl'));
@@ -51,10 +53,9 @@ module.exports = async (ctx, next) => {
 
 let getWS1 = result => {
     let ws = {};
-    let length = result[0].length;
     result.forEach((student, idx1) => {
-        let cellChar = 65 + 4 * (idx1 % 5);
-        let cellNum = Math.floor(idx1 / 5) * (length + 1) + 1;
+        let cellChar = 4 * (idx1 % 5) + 1;
+        let cellNum = Math.floor(idx1 / 5) * (result[0].length + 1) + 1;
         ws[toExcelChar(cellChar) + cellNum] = { t: 's', v: idx1 + 1 };
         ws[toExcelChar(cellChar + 1) + cellNum] = { t: 's', v: '전' };
         ws[toExcelChar(cellChar + 2) + cellNum] = { t: 's', v: '후' };
@@ -64,7 +65,7 @@ let getWS1 = result => {
             ws[toExcelChar(cellChar + 2) + (cellNum + idx2 + 1)] = { t: type, v: question.right };
         })
     })
-    ws['!ref'] = 'A1:ZZ1000'
+    ws['!ref'] = 'A1:S1000'
 
     return ws;
 }
