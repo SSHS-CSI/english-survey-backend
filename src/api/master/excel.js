@@ -1,27 +1,20 @@
 const XLSX = require('xlsx');
 
 module.exports = async (ctx, next) => {
-    if (
-        !Number.isInteger(ctx.request.body.type) ||
-        (1 < ctx.request.body.type || ctx.request.body.type < 0)
-    ) {
+    let type = ctx.request.body.type || parseInt(ctx.query.type, 10);
+    if (!Number.isInteger(type) || (1 < type || type < 0)) {
         ctx.error(400, 'form-malformed');
     }
 
     let wb = XLSX.utils.book_new();
-    let type = ctx.request.body.type; 
     let outFile = null;
 
     if (type === 0) {
-        if (
-            !ctx.request.body.username ||
-            !ctx.request.body.col ||
-            !Number.isInteger(ctx.request.body.col) ||
-            ctx.request.body.col <= 0
-        ) {
+        let username = ctx.request.body.username || ctx.query.username;
+        let col = ctx.request.body.col || parseInt(ctx.query.col, 10);
+        if (!username || !col || !Number.isInteger(col) || col <= 0) {
             ctx.error(400, 'form-malformed');
         }
-        let username = ctx.request.body.username || ctx.query.username;
 
         const result = await ctx.state.collection.account.findOne({ username: username });
         if (result === null) {
@@ -35,7 +28,7 @@ module.exports = async (ctx, next) => {
             });
         });
 
-        ws = getWS1(result.response.data, ctx.request.body.col);
+        ws = getWS1(result.response.data, col);
         XLSX.utils.book_append_sheet(wb, ws, username);
         outFile = XLSX.write(wb, { bookType: 'xlsx', type: 'base64' });
     } else if (type === 1) {
@@ -90,7 +83,7 @@ let getWS2 = result => {
             })
         })
     })
-    for (let i = 0; i < result[0].response.data.length; i++) {
+    for (let i = 0; i < 30; i++) {
         ws[toExcelChar((i + 1) * 2) + 1] = { t: 's', v: 'S' + (i + 1) };
         ws['!merges'].push({ s: { r: 0, c: i * 2 + 1 }, e: { r: 0, c: i * 2 + 2 } });
     }
