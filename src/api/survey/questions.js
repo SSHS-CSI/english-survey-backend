@@ -1,7 +1,12 @@
 module.exports = [
     {
         type: "descriptive",
-        content: "General Impressions of Temporal Fluency"
+        content: "General Impression"
+    },
+    {
+        type: "objective",
+        content: "Comprehensibility",
+        selectCount: 7
     },
     {
         type: "objective",
