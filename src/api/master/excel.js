@@ -72,10 +72,11 @@ let getWS1 = (result, col) => {
 let getWS2 = result => {
     let ws = {};
     ws['!merges'] = []
+    let questionNum = result[0].response.data[0].length;
     result.forEach((survey, idx1) => {
-        ws['A' + (idx1 + 1) * 2] = { t: 's', v: survey.username };
+        let cellNum = idx1 * questionNum + 2;
+        ws['A' + cellNum] = { t: 's', v: survey.username };
         survey.response.data.forEach((student, idx2) => {
-            let cellNum = 2 * (idx1 + 1);
             student.forEach((question, idx3) => {
                 let type = (typeof (question.left) === 'string') ? 's' : 'n';
                 ws[toExcelChar(2 * idx2 + 2) + (cellNum + idx3)] = { t: type, v: question.left };

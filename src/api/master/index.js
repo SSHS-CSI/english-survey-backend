@@ -5,6 +5,6 @@ const { requireAdmin } = require("../../middleware");
 const master = new Router();
 
 master.get("/active", requireAdmin, require("./active"));
-master.get("/excel", requireAdmin, require("./excel")).post("/excel", requireAdmin, require("./excel"));
+master.get("/excel", requireAdmin, require("./excel")).post("/excel", require("./excel"));
 
 module.exports = master;
