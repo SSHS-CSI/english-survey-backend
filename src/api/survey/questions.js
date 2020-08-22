@@ -5,7 +5,7 @@ module.exports = [
     },
     {
         type: "objective",
-        content: "Comprehensibility",
+        content: "Overall Speaking Proficiency",
         selectCount: 7
     },
     {
