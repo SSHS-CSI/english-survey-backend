@@ -79,6 +79,10 @@ let getWS2 = result => {
         survey.response.data.forEach((student, idx2) => {
             student.forEach((question, idx3) => {
                 let type = (typeof (question.left) === 'string') ? 's' : 'n';
+                if (typeof (question.left) === 'number') {
+                    question.left++;
+                    question.right++;
+                }
                 ws[toExcelChar(2 * idx2 + 2) + (cellNum + idx3)] = { t: type, v: question.left };
                 ws[toExcelChar(2 * idx2 + 3) + (cellNum + idx3)] = { t: type, v: question.right };
             })
